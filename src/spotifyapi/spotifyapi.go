@@ -6,12 +6,13 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 )
 
 type SpotifyResponse struct {
 	Tracks struct {
 		Items []struct {
-			Name   string `json:"name"`
+			Name    string `json:"name"`
 			Artists []struct {
 				Name string `json:"name"`
 			} `json:"artists"`
@@ -26,16 +27,33 @@ func GetSongAndArtist(songName string) (string, string, error) {
 	data.Set("type", "track")
 	data.Set("limit", "1")
 
-	req, err := http.NewRequest("GET", baseURL+"?"+data.Encode(), nil)
+	spotifyKey := os.Getenv("SPOTIFY_KEY")
+	if spotifyKey == "" {
+		return "", "", fmt.Errorf("SPOTIFY_KEY environment variable is not set")
+	}
+
+	req, err := http.NewRequest("GET", baseURL, nil)
 	if err != nil {
 		return "", "", err
 	}
 
-	resp, err := http.DefaultClient.Do(req)
+	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", spotifyKey))
+	req.URL.RawQuery = data.Encode()
+
+	// Now you can send the request using http.Client
+	client := &http.Client{}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to send HTTP request: %w", err)
+	}
+
 	if err != nil {
 		return "", "", err
 	}
 	defer resp.Body.Close()
+
+	// Process the response here...
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -45,7 +63,7 @@ func GetSongAndArtist(songName string) (string, string, error) {
 	var spotifyResp SpotifyResponse
 	err = json.Unmarshal(body, &spotifyResp)
 	if err != nil {
-		return "", "", err
+		return "", "", fmt.Errorf("failed to parse response body: %w", err)
 	}
 
 	if len(spotifyResp.Tracks.Items) == 0 {
