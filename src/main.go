@@ -6,10 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"spotifyapi"
-
-	"github.com/aleksandir/filerenamer/src/filerename/filerename.go"
-	"github.com/aleksandir/filerenamer/src/spotifyapi/spotifyapi.go"
+	"github.com/aleksandir/Sheetmusic-renamer/src/spotifyapi"
 )
 
 func main() {
@@ -27,8 +24,7 @@ func main() {
 		// Get the old name without the extension
 		oldName := strings.TrimSuffix(filepath.Base(oldPath), filepath.Ext(oldPath))
 
-		// Get the correct song name and artist name from the Spotify API
-		newName, err := spotifyapi.GetSongAndArtist(oldName)
+		newName, _, err := spotifyapi.GetSongAndArtist(oldName)
 		if err != nil {
 			log.Println("Error getting song and artist:", err)
 			continue
@@ -37,8 +33,7 @@ func main() {
 		// Get the new path
 		newPath := filepath.Join(filepath.Dir(oldPath), newName+".pdf")
 
-		// Rename the file
-		err = filerename.Rename(oldPath, newPath)
+		err = os.Rename(oldPath, newPath)
 		if err != nil {
 			log.Println("Error renaming file:", err)
 			continue
