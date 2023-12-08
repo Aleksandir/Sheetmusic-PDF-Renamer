@@ -27,32 +27,28 @@ func GetSongAndArtist(songName string) (string, string, error) {
 	data.Set("type", "track")
 	data.Set("limit", "1")
 
+	req, err := http.NewRequest("GET", baseURL, nil)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to create HTTP request: %w", err)
+	}
+
 	spotifyKey := os.Getenv("SPOTIFY_KEY")
+
 	if spotifyKey == "" {
 		return "", "", fmt.Errorf("SPOTIFY_KEY environment variable is not set")
 	}
-
-	req, err := http.NewRequest("GET", baseURL, nil)
-	if err != nil {
-		return "", "", err
-	}
-
 	req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", spotifyKey))
 	req.URL.RawQuery = data.Encode()
 
+	fmt.Println("Sending request to:", req.URL.String())
+
 	// Now you can send the request using http.Client
 	client := &http.Client{}
-
 	resp, err := client.Do(req)
-	if err != nil {
-		return "", "", fmt.Errorf("failed to send HTTP request: %w", err)
-	}
-
 	if err != nil {
 		return "", "", err
 	}
 	defer resp.Body.Close()
-
 	// Process the response here...
 
 	body, err := ioutil.ReadAll(resp.Body)
