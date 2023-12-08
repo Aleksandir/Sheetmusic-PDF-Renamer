@@ -1,5 +1,3 @@
-module github.com/yourusername/spotify-pdf-renamer
+module github.com/aleksandir/Sheetmusic-renamer
 
 go 1.16
-
-require github.com/zmb3/spotify/v2 v2.4.0 // indirect
