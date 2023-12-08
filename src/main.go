@@ -6,8 +6,10 @@ import (
 	"path/filepath"
 	"strings"
 
-	"./filerename"
-	"./spotifyapi"
+	"spotifyapi"
+
+	"github.com/aleksandir/filerenamer/src/filerename/filerename.go"
+	"github.com/aleksandir/filerenamer/src/spotifyapi/spotifyapi.go"
 )
 
 func main() {
