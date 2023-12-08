@@ -11,7 +11,9 @@ import (
 
 func main() {
 	// Get the directory path from the command line arguments
-	dirPath := os.Args[1]
+	// dirPath := os.Args[1]
+	//! for testing
+	dirPath := "testFiles"
 
 	// Get all PDF files in the directory
 	pdfFiles, err := filepath.Glob(filepath.Join(dirPath, "*.pdf"))
