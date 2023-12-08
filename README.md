@@ -2,6 +2,12 @@
 
 This project is a Go program that renames PDF files in a directory using the Spotify API. The program takes the existing file names, which are assumed to be song names, and queries the Spotify API to get the correct song name and artist name. The PDF files are then renamed to the format "Song name - Artist name".
 
+# Spotify PDF Renamer
+
+> :warning: **NOTE**: This project is currently in development and may not function as expected.
+
+This project is a Go program that renames PDF files in a directory using the Spotify API. The program takes the existing file names, which are assumed to be song names, and queries the Spotify API to get the correct song name and artist name. The PDF files are then renamed to the format "Song name - Artist name".
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
@@ -35,6 +41,7 @@ The project has the following files:
 ## Contributing
 
 Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
+a
 
 ## License
 
