@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -26,7 +27,8 @@ func main() {
 		// Get the old name without the extension
 		oldName := strings.TrimSuffix(filepath.Base(oldPath), filepath.Ext(oldPath))
 
-		newName, _, err := spotifyapi.GetSongAndArtist(oldName)
+		newName, name2, err := spotifyapi.GetSongAndArtist(oldName)
+		fmt.Println(oldName, newName, name2, err)
 		if err != nil {
 			log.Println("Error getting song and artist:", err)
 			continue
