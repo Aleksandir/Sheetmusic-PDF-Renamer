@@ -11,14 +11,14 @@ def main():
     names, differences = scan_dir("testFiles/")
 
     # print the differences
-    for key, value in differences.items():
-        print(f"{key.ljust(50)} => {value}")
+    display_differences(differences, names)
 
     while True:
         print("\n")
         print("1. Rename files")
         print("2. ignore file")
-        print("3. Exit")
+        print("3. undo ignore file")
+        print("4. Exit")
         choice = input("Enter choice: ")
 
         if choice == "1":
@@ -37,9 +37,38 @@ def main():
             print(f"Ignoring file - {names[index]}")
             names = ignore_file(index, names, differences)
         elif choice == "3":
+            index = -1
+            while True:
+                # validate input
+                index = int(
+                    input(f"Enter index of file between 0 and {len(names)-1}: ")
+                )
+                if index < 0 or index >= len(names):
+                    print("Invalid index.")
+                else:
+                    break
+
+            undo_ignored_file(index, names, differences)
+        elif choice == "4":
             break
         else:
             print("Invalid choice.")
+
+
+def undo_ignored_file(index, names, differences):
+    print(f"Undoing ignore file - {differences[index][1]}")
+    if differences.get(index):  # Check if index exists in differences
+        names[index] = differences[index][1]
+        print(f"New name - {names[index]}")
+    else:
+        print(f"No proposed new name for - {differences[index][0]}")
+
+    display_differences(differences, names)
+
+
+def display_differences(differences, names):
+    for key, value in differences.items():
+        print(f"{differences[key][0].ljust(50)} => {names[key]}")
 
 
 def rename_files(names):
@@ -57,13 +86,9 @@ def rename_files(names):
 def ignore_file(index, new_names, differences):
     # to separate the new names from the old names
     print()
-    for key, value in differences.items():
-        if value[0] == new_names[index]:
-            differences[key] = "ignored"
-            new_names[index] = "ignored"
+    new_names[index] = "ignored"
 
-    for key, value in differences.items():
-        print(f"{key.ljust(50)} => {value}")
+    display_differences(differences, new_names)
 
     return new_names
 
@@ -83,12 +108,12 @@ def scan_dir(dir):
                 new_name = new_name.replace(char, "")
 
         base_name = str(index) + ". " + base_name
-        index += 1
         if len(base_name) > 50:
             base_name = base_name[:47] + "..."
 
-        differences[base_name] = [new_name]
+        differences[index] = [base_name, new_name]  # Use the index as the key
         new_names.append(new_name)
+        index += 1
 
     return new_names, differences
 
