@@ -5,9 +5,6 @@ import string
 # from musicbrainz import get_title_and_artist
 from lastfm import get_title_and_artist
 
-# URL for testing: https://musicbrainz.org/ws/2/release?limit=1&query=Chasing-Cars-Part&fmt=json
-
-
 directory = input("Enter directory: ")
 
 
