@@ -88,7 +88,7 @@ def rename_files(names):
             index += 1
             continue
 
-        os.rename(f"{directory}/{filename}", f"{directory}/{names[index]}")
+        os.rename(f"{directory}/{filename}", f"{directory}/{names[index]}.pdf")
         index += 1
 
 
@@ -129,6 +129,9 @@ def scan_dir(dir):
     return new_names, differences
 
 
+# current bugs
+# 1 sometimes returns artist as song title (Iris-The-Goo-Goo-Dolls-Peter-John-Arrangeme... => Goo Goo Dolls - Goo Goo Dolls) & (Poison - Alice-Cooper => Alice Cooper - Alice Cooper)
+# 2 sometimes gets the artist wrong and instead has another artist or uses a cover artist (creep chords => Creep - VELIAL SQUAD, Stairway to heven => Heven - O Saala Sakraal)
 def get_title_and_artist(song):
     response = requests.get(
         f"https://musicbrainz.org/ws/2/release?limit=1&query={song}&fmt=json"
