@@ -34,10 +34,7 @@ def get_title_and_artist(song):
             else:
                 artist = "No artist credit found."
         else:
-            title = "No recordings found."
-            artist = "No recordings found."
-    else:
-        title = "Error"
-        artist = "Error"
+            title = "Error"
+            artist = "Error"
 
     return title, artist

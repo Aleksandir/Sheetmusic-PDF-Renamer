@@ -1,7 +1,9 @@
 import os
 import string
 
-from musicbrainz import get_title_and_artist
+# API selection
+# from musicbrainz import get_title_and_artist
+from lastfm import get_title_and_artist
 
 # URL for testing: https://musicbrainz.org/ws/2/release?limit=1&query=Chasing-Cars-Part&fmt=json
 
@@ -131,6 +133,10 @@ def scan_dir(dir):
     for filename in os.listdir(dir):
         base_name, ext = os.path.splitext(filename)
         title, artist = get_title_and_artist(base_name)
+
+        if title == "Error" or artist == "Error":
+            print(f"Error: {filename}")
+            continue
 
         new_name = f"{title} - {artist}"
         # Remove punctuation from the new name except for "-" and "."
