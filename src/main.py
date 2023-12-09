@@ -35,7 +35,7 @@ def main():
                     break
 
             print(f"Ignoring file - {names[index]}")
-            ignore_file(index, names, differences)
+            names = ignore_file(index, names, differences)
         elif choice == "3":
             break
         else:
@@ -60,9 +60,12 @@ def ignore_file(index, new_names, differences):
     for key, value in differences.items():
         if value[0] == new_names[index]:
             differences[key] = "ignored"
+            new_names[index] = "ignored"
 
     for key, value in differences.items():
         print(f"{key.ljust(50)} => {value}")
+
+    return new_names
 
 
 def scan_dir(dir):
