@@ -91,7 +91,15 @@ def rename_files(names, differences):
             continue
 
         original_filename = differences[index][0]
-        os.rename(f"{directory}/{original_filename}", f"{directory}/{new_name}.pdf")
+        new_path = f"{directory}/{new_name}.pdf"
+
+        # Check if a file with the new name already exists
+        counter = 1
+        while os.path.exists(new_path):
+            new_path = f"{directory}/{new_name}({counter}).pdf"
+            counter += 1
+
+        os.rename(f"{directory}/{original_filename}", new_path)
 
 
 def ignore_file(list_of_index, new_names, differences):
