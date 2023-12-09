@@ -8,7 +8,8 @@ from lastfm import get_title_and_artist
 # URL for testing: https://musicbrainz.org/ws/2/release?limit=1&query=Chasing-Cars-Part&fmt=json
 
 
-directory = input("Enter directory: ")
+# directory = input("Enter directory: ")
+directory = "testfiles"
 
 
 def main():
@@ -29,7 +30,7 @@ def main():
 
         if choice == "1":
             print("Renaming files...")
-            rename_files(names)
+            rename_files(names, differences)
             print("Done.")
             break
         elif choice == "2":
@@ -81,19 +82,16 @@ def display_differences(differences, names):
     # add a line break
     print()
     for key, value in differences.items():
-        print(f"{differences[key][0].ljust(50)} => {names[key]}")
+        print(f"{key}. {differences[key][0].ljust(50)} => {names[key]}")
 
 
-def rename_files(names):
-    index = 0
-    for filename in os.listdir(directory):
-        base_name, ext = os.path.splitext(filename)
-        if names[index] == "ignored":
-            index += 1
+def rename_files(names, differences):
+    for index, new_name in enumerate(names):
+        if new_name == "ignored":
             continue
 
-        os.rename(f"{directory}/{filename}", f"{directory}/{names[index]}.pdf")
-        index += 1
+        original_filename = differences[index][0]
+        os.rename(f"{directory}/{original_filename}", f"{directory}/{new_name}.pdf")
 
 
 def ignore_file(list_of_index, new_names, differences):
@@ -150,7 +148,7 @@ def scan_dir(dir):
         if len(base_name) > 50:
             base_name = base_name[:47] + "..."
 
-        differences[index] = [base_name, new_name]  # Use the index as the key
+        differences[index] = [filename, new_name]  # Use the index as the key
         new_names.append(new_name)
         index += 1
 
