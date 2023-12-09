@@ -16,26 +16,31 @@ type Artist struct {
 
 type ArtistCredit struct {
 	Name   string `json:"name"`
-	Artist Artist `json:"artist"`
+	Artist struct {
+		ID       string `json:"id"`
+		Name     string `json:"name"`
+		SortName string `json:"sort-name"`
+	} `json:"artist"`
 }
 
 type Recording struct {
-	ID               string         `json:"id"`
-	Score            int            `json:"score"`
-	Title            string         `json:"title"`
-	Length           int            `json:"length"`
-	ArtistCredit     []ArtistCredit `json:"artist-credit"`
-	FirstReleaseDate string         `json:"first-release-date"`
-	Video            interface{}    `json:"video"` // Use interface{} if the type is unknown
-	Isrcs            []string       `json:"isrcs"`
-	Disambiguation   string         `json:"disambiguation"`
+	ID           string         `json:"id"`
+	Score        int            `json:"score"`
+	StatusID     string         `json:"status-id"`
+	PackagingID  string         `json:"packaging-id"`
+	Count        int            `json:"count"`
+	Title        string         `json:"title"`
+	Status       string         `json:"status"`
+	Packaging    string         `json:"packaging"`
+	ArtistCredit []ArtistCredit `json:"artist-credit"`
 }
 
 type Response struct {
-	Created    string      `json:"created"`
-	Count      int         `json:"count"`
-	Offset     int         `json:"offset"`
-	Recordings []Recording `json:"recordings"`
+	ArtistCredit [0]ArtistCredit `json:"artist-credit"`
+	Created      string          `json:"created"`
+	Count        int             `json:"count"`
+	Offset       int             `json:"offset"`
+	Recordings   []Recording     `json:"recordings"`
 }
 
 func main() {
@@ -58,30 +63,18 @@ func main() {
 	}
 
 	// unmarshal the json into a struct
-	var response Response
-	err = json.Unmarshal(body, &response)
-	if err != nil {
-		fmt.Println("Error:", err)
+	var recording Recording
+	unmarshalErr := json.Unmarshal(body, &recording)
+	if unmarshalErr != nil {
+		fmt.Println("Error:", unmarshalErr)
 		return
 	}
 
-	formattedJSON, err := json.MarshalIndent(response, "", "  ")
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-
-	fmt.Println(string(formattedJSON))
-
-	if len(response.Recordings) > 0 {
-		firstRecording := response.Recordings[0]
-		fmt.Println("First track name:", firstRecording.Title)
-		if len(firstRecording.ArtistCredit) > 0 {
-			fmt.Println("First artist:", firstRecording.ArtistCredit[0].Name)
-		} else {
-			fmt.Println("No artist credit found.")
-		}
+	fmt.Println("Title:", recording.Title)
+	if len(recording.ArtistCredit) > 0 {
+		fmt.Println("Artist:", recording.ArtistCredit[0].Name)
 	} else {
-		fmt.Println("No recordings found.")
+		fmt.Println("No artist credit found.")
 	}
+
 }
