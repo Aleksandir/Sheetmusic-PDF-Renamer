@@ -1,57 +1,87 @@
 package main
 
 import (
-	"encoding/base64"
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
-	"os"
-	"strings"
-
-	"github.com/joho/godotenv"
 )
 
-func main() {
-	// Load .env file
-	err := godotenv.Load("src/.env")
-	if err != nil {
-		fmt.Println("Error loading .env file")
-		return
-	}
-
-	clientID := os.Getenv("SPOTIFY_CLIENT_ID")
-	clientSecret := os.Getenv("SPOTIFY_CLIENT_SECRET")
-
-	// Base64 encode the client ID and secret
-	auth := base64.StdEncoding.EncodeToString([]byte(clientID + ":" + clientSecret))
-
-	data := url.Values{}
-	data.Set("grant_type", "client_credentials")
-
-	req, err := http.NewRequest("POST", "", strings.NewReader(data.Encode()))
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-
-	req.Header.Add("Authorization", "Basic "+auth)
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-	defer resp.Body.Close()
-
-	// handle response
-	fmt.Println("Response:", string(resp.Status))
+type Artist struct {
+	ID       string `json:"id"`
+	Name     string `json:"name"`
+	SortName string `json:"sort-name"`
 }
 
-// func getToken() string {
-// 	authString := fmt.Sprintf("%v:%v", os.Getenv("CLIENT_ID"), os.Getenv("CLIENT_SECRET"))
-// 	encodedAuthString := base64.StdEncoding.EncodeToString([]byte(authString))
+type ArtistCredit struct {
+	Name   string `json:"name"`
+	Artist Artist `json:"artist"`
+}
 
-// 	return encodedAuthString
-// }
+type Recording struct {
+	ID               string         `json:"id"`
+	Score            int            `json:"score"`
+	Title            string         `json:"title"`
+	Length           int            `json:"length"`
+	ArtistCredit     []ArtistCredit `json:"artist-credit"`
+	FirstReleaseDate string         `json:"first-release-date"`
+	Video            interface{}    `json:"video"` // Use interface{} if the type is unknown
+	Isrcs            []string       `json:"isrcs"`
+	Disambiguation   string         `json:"disambiguation"`
+}
+
+type Response struct {
+	Created    string      `json:"created"`
+	Count      int         `json:"count"`
+	Offset     int         `json:"offset"`
+	Recordings []Recording `json:"recordings"`
+}
+
+func main() {
+	// url for testing https://musicbrainz.org/ws/2/release?'limit=1&query=Chasing-Cars-Part&fmt=json
+	song := "Chasing-Cars-Part" // replace with your song title
+	resp, err := http.Get("https://musicbrainz.org/ws/2/release?'limit=1&query=" + url.QueryEscape(song) + "&fmt=json")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	// this is to close the body after the function is done
+	defer resp.Body.Close()
+
+	// read the body of the response
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	// unmarshal the json into a struct
+	var response Response
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	formattedJSON, err := json.MarshalIndent(response, "", "  ")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	fmt.Println(string(formattedJSON))
+
+	if len(response.Recordings) > 0 {
+		firstRecording := response.Recordings[0]
+		fmt.Println("First track name:", firstRecording.Title)
+		if len(firstRecording.ArtistCredit) > 0 {
+			fmt.Println("First artist:", firstRecording.ArtistCredit[0].Name)
+		} else {
+			fmt.Println("No artist credit found.")
+		}
+	} else {
+		fmt.Println("No recordings found.")
+	}
+}
