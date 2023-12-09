@@ -1,15 +1,4 @@
 
-testFiles/Crazy Train - Ozzy Osbourne.pdf
-testFiles/creep chords.pdf
-testFiles/DANCE DANCE OFFICIAL by Fall Out Boy @ Ultimate-Guitar.pdf
-testFiles/Elton John - Can You Feel the Love Tonight fingerstyle tabs gp5, PDF.pdf
-testFiles/FAINT OFFICIAL by Linkin Park @ Ultimate-Guitar.pdf
-testFiles/Foo-Fighters-Pretender-Pro.pdf (1).pdf
-testFiles/Foo-Fighters-Pretender-Pro.pdf.pdf
-testFiles/Glossary of Musical Terms.pdf
-testFiles/Guitar Fretboard - Memorize The Fretboard In Less Than 24 Hours.pdf
-testFiles/guitar notes chunking.pdf
-src/.env
 src/tempCodeRunnerFile.go
 src/tempCodeRunnerFile.py
 
@@ -18,3 +7,4 @@ testFiles2
 
 src/__pycache__
 SampleOutput.json
+
