@@ -6,11 +6,49 @@ import requests
 # URL for testing: https://musicbrainz.org/ws/2/release?limit=1&query=Chasing-Cars-Part&fmt=json
 
 
-testFiles_dir = "testFiles"  # replace with your directory
-
-
 def main():
-    for filename in os.listdir(testFiles_dir):
+    print("Scanning directory...")
+    names, differences = scan_dir("testFiles/")
+
+    # print the differences
+    for i in range(len(differences)):
+        print(differences[i])
+
+    print("\n\n\n")
+    for i in range(len(names)):
+        print(f"testFiles/{names[i]}")
+
+    while True:
+        print("\n\n\n")
+        print("1. Rename files")
+        print("2. ignore file")
+        print("3. Exit")
+        choice = input("Enter choice: ")
+
+        if choice == "1":
+            print("Renaming files...")
+            # rename_files(names)
+        elif choice == "2":
+            index = -1
+            while True:
+                index = int(input(f"Enter index of file between 0 and {len(names)}: "))
+                if index < 0 or index >= len(names):
+                    print("Invalid index.")
+                else:
+                    break
+            print(f"Ignoring file - {names[index]}")
+            # ignore_file(index)
+        elif choice == "3":
+            break
+        else:
+            print("Invalid choice.")
+
+
+def scan_dir(dir):
+    new_names = []
+    differences = []
+    index = 0
+    for filename in os.listdir(dir):
         base_name, ext = os.path.splitext(filename)
         title, artist = get_title_and_artist(base_name)
 
@@ -20,9 +58,14 @@ def main():
             if char in string.punctuation and not char == "-" and not char == ".":
                 newName = newName.replace(char, "")
 
-        offset = len(f"Base name: {base_name}")
+        base_name = str(index) + ". " + base_name
+        index += 1
+        if len(base_name) > 50:
+            base_name = base_name[:47] + "..."
 
-        print(f"{base_name}        =>        {newName}")
+        new_names.append(newName)
+        differences.append(f"{base_name.ljust(50)} =>          {newName}")
+    return new_names, differences
 
 
 def get_title_and_artist(song):
