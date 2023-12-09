@@ -11,7 +11,7 @@ def get_title_and_artist(song):
     APIKEY = os.getenv("LASTFM_API_KEY")
 
     response = requests.get(
-        f"http://ws.audioscrobbler.com/2.0/?method=track.search&track={song}&api_key={APIKEY}&format=json"
+        f"http://ws.audioscrobbler.com/2.0/?method=track.search&limit=1&track={song}&api_key={APIKEY}&format=json"
     )
 
     # Check if the request was successful
