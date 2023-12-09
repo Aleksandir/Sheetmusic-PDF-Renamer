@@ -23,7 +23,7 @@ def main():
 
         if choice == "1":
             print("Renaming files...")
-            # rename_files(names)
+            rename_files(names)
         elif choice == "2":
             index = -1
             while True:
@@ -40,6 +40,18 @@ def main():
             break
         else:
             print("Invalid choice.")
+
+
+def rename_files(names):
+    index = 0
+    for filename in os.listdir("testFiles/"):
+        base_name, ext = os.path.splitext(filename)
+        if names[index] == "ignored":
+            index += 1
+            continue
+
+        os.rename(f"testFiles/{filename}", f"testFiles/{names[index]}{ext}")
+        index += 1
 
 
 def ignore_file(index, new_names, differences):
@@ -61,7 +73,7 @@ def scan_dir(dir):
         base_name, ext = os.path.splitext(filename)
         title, artist = get_title_and_artist(base_name)
 
-        new_name = f"{title} - {artist}{ext}"
+        new_name = f"{title} - {artist}"
         # Remove punctuation from the new name except for "-" and "."
         for char in new_name:
             if char in string.punctuation and not char == "-" and not char == ".":
