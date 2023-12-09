@@ -17,3 +17,4 @@ testFiles
 backup of test
 
 src/__pycache__
+SampleOutput.json
