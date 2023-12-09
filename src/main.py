@@ -11,15 +11,11 @@ def main():
     names, differences = scan_dir("testFiles/")
 
     # print the differences
-    for i in range(len(differences)):
-        print(differences[i])
-
-    print("\n\n\n")
-    for i in range(len(names)):
-        print(f"testFiles/{names[i]}")
+    for key, value in differences.items():
+        print(f"{key.ljust(50)} => {value}")
 
     while True:
-        print("\n\n\n")
+        print("\n")
         print("1. Rename files")
         print("2. ignore file")
         print("3. Exit")
@@ -31,40 +27,52 @@ def main():
         elif choice == "2":
             index = -1
             while True:
+                # validate input
                 index = int(input(f"Enter index of file between 0 and {len(names)}: "))
                 if index < 0 or index >= len(names):
                     print("Invalid index.")
                 else:
                     break
+
             print(f"Ignoring file - {names[index]}")
-            # ignore_file(index)
+            ignore_file(index, names, differences)
         elif choice == "3":
             break
         else:
             print("Invalid choice.")
 
 
+def ignore_file(index, new_names, differences):
+    for key, value in differences.items():
+        if value[0] == new_names[index]:
+            differences[key] = "ignored"
+
+    for key, value in differences.items():
+        print(f"{key.ljust(50)} => {value}")
+
+
 def scan_dir(dir):
     new_names = []
-    differences = []
+    differences = {}
     index = 0
     for filename in os.listdir(dir):
         base_name, ext = os.path.splitext(filename)
         title, artist = get_title_and_artist(base_name)
 
-        newName = f"{title} - {artist}{ext}"
+        new_name = f"{title} - {artist}{ext}"
         # Remove punctuation from the new name except for "-" and "."
-        for char in newName:
+        for char in new_name:
             if char in string.punctuation and not char == "-" and not char == ".":
-                newName = newName.replace(char, "")
+                new_name = new_name.replace(char, "")
 
         base_name = str(index) + ". " + base_name
         index += 1
         if len(base_name) > 50:
             base_name = base_name[:47] + "..."
 
-        new_names.append(newName)
-        differences.append(f"{base_name.ljust(50)} =>          {newName}")
+        differences[base_name] = [new_name]
+        new_names.append(new_name)
+
     return new_names, differences
 
 
