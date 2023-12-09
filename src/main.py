@@ -43,6 +43,8 @@ def main():
 
 
 def ignore_file(index, new_names, differences):
+    # to separate the new names from the old names
+    print()
     for key, value in differences.items():
         if value[0] == new_names[index]:
             differences[key] = "ignored"
