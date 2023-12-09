@@ -8,7 +8,7 @@ import requests
 
 def main():
     print("Scanning directory...")
-    names, differences = scan_dir("testFiles/")
+    names, differences = scan_dir("testFiles backup")
 
     # print the differences
     display_differences(differences, names)
@@ -24,6 +24,8 @@ def main():
         if choice == "1":
             print("Renaming files...")
             rename_files(names)
+            print("Done.")
+            break
         elif choice == "2":
             index = -1
             while True:
@@ -83,10 +85,12 @@ def rename_files(names):
         index += 1
 
 
-def ignore_file(index, new_names, differences):
+def ignore_file(list_of_index, new_names, differences):
     # to separate the new names from the old names
     print()
-    new_names[index] = "ignored"
+    for index in list_of_index:
+        print(f"Ignoring file - {differences[index][1]}")
+        new_names[index] = "ignored"
 
     display_differences(differences, new_names)
 
