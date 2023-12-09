@@ -18,8 +18,6 @@ def get_title_and_artist(song):
         f"http://ws.audioscrobbler.com/2.0/?method=track.search&track={song}&api_key={APIKEY}&format=json"
     )
 
-    pprint.pprint(response.json())
-
     # Check if the request was successful
     if response.status_code == 200:
         data = response.json()
