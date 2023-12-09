@@ -1,6 +1,6 @@
 # MusicBrainz PDF Renamer 🎵
 
-This project is a Python program that renames sheet music PDF files in a directory using the MusicBrainz API. The program takes the existing file names, which are assumed to be song names, and queries the MusicBrainz API to get the correct song name and artist name. The PDF files are then renamed to the format "Song name - Artist name" 🎶🎨
+This project is a Python program that renames sheet music PDF files in a directory using the Last.fm API. The program takes the existing file names, which are assumed to be song names, and queries the Last.fm API to get the correct song name and artist name. The PDF files are then renamed to the format "Song name - Artist name" 🎶🎨
 
 ## Getting Started 🚀
 
@@ -9,7 +9,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites 📋
 
 - Python 3.7 or later 🐍
-- A MusicBrainz account to get API credentials 🔑
+- A Last.fm account to get API credentials 🔑
 
 ### Installing 💻
 
@@ -28,7 +28,7 @@ These instructions will get you a copy of the project up and running on your loc
 The project has the following files:
 
 - `main.py`: This is the main file of the application. It is responsible for initiating the application and calling the necessary functions from other files.
-- `musicbrainzapi.py`: This file contains the functions that interact with the MusicBrainz API. It exports a function that takes a song name as input and returns the correct song name and artist name by querying the MusicBrainz API.
+- `lastfm.py`: This file contains the functions that interact with the Last.fm API. It exports a function that takes a song name as input and returns the correct song name and artist name by querying the Last.fm API.
 - `requirements.txt`: This file lists the dependencies of the Python project. 📦
 
 ## Contributing 🤝
