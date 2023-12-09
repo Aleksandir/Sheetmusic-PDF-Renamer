@@ -5,10 +5,14 @@ import requests
 
 # URL for testing: https://musicbrainz.org/ws/2/release?limit=1&query=Chasing-Cars-Part&fmt=json
 
+# directory = input("Enter directory: ")
+directory = "testFiles backup"
+
 
 def main():
     print("Scanning directory...")
-    names, differences = scan_dir("testFiles backup")
+
+    names, differences = scan_dir(directory)
 
     # print the differences
     display_differences(differences, names)
@@ -30,14 +34,17 @@ def main():
             index = -1
             while True:
                 # validate input
-                index = int(input(f"Enter index of file between 0 and {len(names)}: "))
-                if index < 0 or index >= len(names):
+                indices = input(
+                    f"Enter indices of files between 0 and {len(names)-1}, separated by spaces: "
+                )
+                indices = [int(index) for index in indices.split()]
+
+                if any(index < 0 or index >= len(names) for index in indices):
                     print("Invalid index.")
                 else:
                     break
 
-            print(f"Ignoring file - {names[index]}")
-            names = ignore_file(index, names, differences)
+            names = ignore_file(indices, names, differences)
         elif choice == "3":
             index = -1
             while True:
@@ -75,13 +82,13 @@ def display_differences(differences, names):
 
 def rename_files(names):
     index = 0
-    for filename in os.listdir("testFiles/"):
+    for filename in os.listdir(directory):
         base_name, ext = os.path.splitext(filename)
         if names[index] == "ignored":
             index += 1
             continue
 
-        os.rename(f"testFiles/{filename}", f"testFiles/{names[index]}{ext}")
+        os.rename(f"{directory}/{filename}", f"{directory}/{names[index]}")
         index += 1
 
 
