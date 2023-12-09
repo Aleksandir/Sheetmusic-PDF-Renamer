@@ -93,6 +93,17 @@ def rename_files(names):
 
 
 def ignore_file(list_of_index, new_names, differences):
+    """
+    Ignores files based on the given list of indices.
+
+    Args:
+        list_of_index (list): List of indices of files to be ignored.
+        new_names (list): List of new names for the files.
+        differences (list): List of file differences.
+
+    Returns:
+        list: Updated list of new names.
+    """
     # to separate the new names from the old names
     print()
     for index in list_of_index:
@@ -105,6 +116,15 @@ def ignore_file(list_of_index, new_names, differences):
 
 
 def scan_dir(dir):
+    """
+    Scans the specified directory and renames the files based on their title and artist.
+
+    Args:
+        dir (str): The directory path to scan.
+
+    Returns:
+        tuple: A tuple containing a list of new file names and a dictionary of differences between the old and new names.
+    """
     new_names = []
     differences = {}
     index = 0
