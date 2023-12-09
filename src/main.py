@@ -5,8 +5,8 @@ import requests
 
 # URL for testing: https://musicbrainz.org/ws/2/release?limit=1&query=Chasing-Cars-Part&fmt=json
 
-# directory = input("Enter directory: ")
-directory = "testFiles backup"
+
+directory = input("Enter directory: ")
 
 
 def main():
