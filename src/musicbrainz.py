@@ -6,6 +6,15 @@ import requests
 
 
 def get_title_and_artist(song):
+    """
+    Retrieves the title and artist of a song from the MusicBrainz API.
+
+    Args:
+        song (str): The name of the song.
+
+    Returns:
+        tuple: A tuple containing the title and artist of the song.
+    """
     response = requests.get(
         f"https://musicbrainz.org/ws/2/release?limit=1&query={song}&fmt=json"
     )
