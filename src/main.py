@@ -140,6 +140,11 @@ def scan_dir(dir):
     index = 0
     for filename in os.listdir(dir):
         base_name, ext = os.path.splitext(filename)
+
+        # Only consider .pdf files
+        if ext.lower() != ".pdf":
+            continue
+
         title, artist = get_title_and_artist(base_name)
 
         if title == "Error" or artist == "Error":
