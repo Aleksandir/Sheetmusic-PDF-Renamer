@@ -78,6 +78,8 @@ def undo_ignored_file(index, names, differences):
 
 
 def display_differences(differences, names):
+    # add a line break
+    print()
     for key, value in differences.items():
         print(f"{differences[key][0].ljust(50)} => {names[key]}")
 
