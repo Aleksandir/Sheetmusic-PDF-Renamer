@@ -1,4 +1,5 @@
 import os
+import string
 
 import requests
 
@@ -12,7 +13,16 @@ def main():
     for filename in os.listdir(testFiles_dir):
         base_name, ext = os.path.splitext(filename)
         title, artist = get_title_and_artist(base_name)
-        print(f"Base name: {base_name}\n{title} - {artist}\n")
+
+        newName = f"{title} - {artist}{ext}"
+        # Remove punctuation from the new name except for "-" and "."
+        for char in newName:
+            if char in string.punctuation and not char == "-" and not char == ".":
+                newName = newName.replace(char, "")
+
+        offset = len(f"Base name: {base_name}")
+
+        print(f"{base_name}        =>        {newName}")
 
 
 def get_title_and_artist(song):
