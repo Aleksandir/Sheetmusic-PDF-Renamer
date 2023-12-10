@@ -164,4 +164,5 @@ def scan_dir(dir):
     return new_names, differences
 
 
-main()
+if __name__ == "__main__":
+    main()
