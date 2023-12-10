@@ -10,7 +10,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites 📋
 
-- Python 3.7 or later 🐍
+- Python 3.7 or later (found [here](https://www.python.org/downloads/)) 🐍
 - A Last.fm account to get API credentials 🔑
 
 ### Getting the API Key 🔑
