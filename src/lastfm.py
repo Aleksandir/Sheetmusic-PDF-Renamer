@@ -26,9 +26,3 @@ def get_title_and_artist(song):
             artist = "Error"
 
     return title, artist
-
-
-if __name__ == "__main__":
-    title, artist = get_title_and_artist("Kickstart My Heart Mötley Crüe")
-    print(title)
-    print(artist)
