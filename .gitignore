@@ -9,3 +9,4 @@ src/__pycache__
 SampleOutput.json
 
 notes.txt
+src/.env
