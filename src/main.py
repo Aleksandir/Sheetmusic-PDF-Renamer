@@ -17,8 +17,8 @@ def main():
     while True:
         print("\n")
         print("1. Rename files")
-        print("2. ignore file")
-        print("3. undo ignore file")
+        print("2. Ignore files")
+        print("3. Undo ignore file")
         print("4. Exit")
         choice = input("Enter choice: ")
 
