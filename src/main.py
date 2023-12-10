@@ -73,19 +73,40 @@ def undo_ignored_file(index, names, differences):
     display_differences(differences, names)
 
 
+def truncate_and_append_ellipsis(string, max_length):
+    """
+    Truncates a string to a specified maximum length and appends an ellipsis if necessary.
+
+    Args:
+        string (str): The input string.
+        max_length (int): The maximum length of the truncated string.
+
+    Returns:
+        str: The truncated string with an ellipsis if necessary.
+    """
+    return string[:max_length] + "..." if len(string) > max_length else string
+
+
 def display_differences(differences, names):
+    """
+    Display the differences between original names and new names.
+
+    Args:
+        differences (dict): A dictionary containing the differences between original names and new names.
+        names (dict): A dictionary containing the new names.
+
+    Returns:
+        None
+    """
     # add a line break
     print()
     for key, value in differences.items():
-        if len(differences[key][0]) > 50:
-            short_name = differences[key][0][: 47 - len(str(key))] + "..."
-            print(
-                f"{key}. {short_name} => {names[key][:70]}{'...' if len(names[key]) > 70 else ''}"
-            )
-        else:
-            print(
-                f"{key}. {differences[key][0].ljust(50-len(str(key)))} => {names[key][:70]}{'...' if len(names[key]) > 70 else ''}"
-            )
+        original_name = truncate_and_append_ellipsis(
+            differences[key][0], 47 - len(str(key))
+        )
+        new_name = truncate_and_append_ellipsis(names[key], 70)
+        # adjust the spacing between the original name and the new name so that the new name is always on the same column
+        print(f"{key}. {original_name.ljust(50-len(str(key)))} => {new_name}")
 
 
 def rename_files(names, differences):
