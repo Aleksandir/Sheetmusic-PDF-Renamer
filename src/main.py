@@ -2,6 +2,7 @@ import os
 import string
 
 from lastfm import get_title_and_artist
+from tqdm import tqdm
 
 directory = input("Enter directory: ")
 
@@ -130,9 +131,10 @@ def scan_dir(dir):
         tuple: A tuple containing a list of new file names and a dictionary of differences between the old and new names.
     """
     new_names = []
+    errors = []
     differences = {}
     index = 0
-    for filename in os.listdir(dir):
+    for filename in tqdm(os.listdir(dir)):
         base_name, ext = os.path.splitext(filename)
 
         # Only consider .pdf files
@@ -142,7 +144,7 @@ def scan_dir(dir):
         title, artist = get_title_and_artist(base_name)
 
         if title == "Error" or artist == "Error":
-            print(f"Error: {filename}")
+            errors.append(filename)
             continue
 
         new_name = f"{title} - {artist}"
@@ -158,7 +160,8 @@ def scan_dir(dir):
         differences[index] = [filename, new_name]  # Use the index as the key
         new_names.append(new_name)
         index += 1
-
+    for i in errors:
+        print(f"No result found for: {i}")
     return new_names, differences
 
 
