@@ -1,7 +1,7 @@
 import os
 import string
 
-from lastfm import get_title_and_artist
+from lastfm_API import get_title_and_artist
 from tqdm import tqdm
 
 directory = input("Enter directory: ")
