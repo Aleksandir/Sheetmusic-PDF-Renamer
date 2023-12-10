@@ -77,7 +77,15 @@ def display_differences(differences, names):
     # add a line break
     print()
     for key, value in differences.items():
-        print(f"{key}. {differences[key][0].ljust(50)} => {names[key]}")
+        if len(differences[key][0]) > 50:
+            short_name = differences[key][0][: 47 - len(str(key))] + "..."
+            print(
+                f"{key}. {short_name} => {names[key][:70]}{'...' if len(names[key]) > 70 else ''}"
+            )
+        else:
+            print(
+                f"{key}. {differences[key][0].ljust(50-len(str(key)))} => {names[key][:70]}{'...' if len(names[key]) > 70 else ''}"
+            )
 
 
 def rename_files(names, differences):
@@ -152,10 +160,6 @@ def scan_dir(dir):
         for char in new_name:
             if char in string.punctuation and not char == "-" and not char == ".":
                 new_name = new_name.replace(char, "")
-
-        base_name = str(index) + ". " + base_name
-        if len(base_name) > 50:
-            base_name = base_name[:47] + "..."
 
         differences[index] = [filename, new_name]  # Use the index as the key
         new_names.append(new_name)
