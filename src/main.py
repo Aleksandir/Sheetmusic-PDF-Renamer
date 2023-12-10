@@ -1,8 +1,6 @@
 import os
 import string
 
-# API selection
-# from musicbrainz import get_title_and_artist
 from lastfm import get_title_and_artist
 
 directory = input("Enter directory: ")
