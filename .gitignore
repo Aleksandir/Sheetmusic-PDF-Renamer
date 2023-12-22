@@ -12,3 +12,4 @@ notes.txt
 src/.env
 
 test_files
+.DS_Store
