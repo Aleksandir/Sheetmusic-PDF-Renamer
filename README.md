@@ -1,4 +1,4 @@
-# MusicBrainz PDF Renamer 🎵
+# Sheetmusic PDF Renamer 🎵
 
 This project is a Python program that renames sheet music PDF files in a directory using the Last.fm API. The program takes the existing file names, which are assumed to be song names, and queries the Last.fm API to get the correct song name and artist name. The PDF files are then renamed to the format "Song name - Artist name" 🎶🎨
 
