@@ -1,13 +1,14 @@
 import os
 import string
+from typing import Dict, List, Tuple
 
 from lastfm_API import get_title_and_artist
 from tqdm import tqdm
 
-directory = input("Enter directory: ")
+directory: str = input("Enter directory: ")
 
 
-def main():
+def main() -> None:
     print("Scanning directory...")
 
     names, differences = scan_dir(directory)
@@ -21,7 +22,7 @@ def main():
         print("2. Ignore files")
         print("3. Undo ignore file")
         print("4. Exit")
-        choice = input("Enter choice: ")
+        choice: str = input("Enter choice: ")
 
         if choice == "1":
             print("Renaming files...")
@@ -29,10 +30,10 @@ def main():
             print("Done.")
             break
         elif choice == "2":
-            index = -1
+            index: int = -1
             while True:
                 # validate input
-                indices = input(
+                indices: List[int] = input(
                     f"Enter indices of files between 0 and {len(names)-1}, separated by spaces: "
                 )
                 indices = [int(index) for index in indices.split()]
@@ -44,7 +45,7 @@ def main():
 
             names = ignore_file(indices, names, differences)
         elif choice == "3":
-            index = -1
+            index: int = -1
             while True:
                 # validate input
                 index = int(
@@ -62,7 +63,9 @@ def main():
             print("Invalid choice.")
 
 
-def undo_ignored_file(index, names, differences):
+def undo_ignored_file(
+    index: int, names: List[str], differences: Dict[int, List[str]]
+) -> None:
     print(f"Undoing ignore file - {differences[index][1]}")
     if differences.get(index):  # Check if index exists in differences
         names[index] = differences[index][1]
@@ -73,7 +76,7 @@ def undo_ignored_file(index, names, differences):
     display_differences(differences, names)
 
 
-def truncate_and_append_ellipsis(string, max_length):
+def truncate_and_append_ellipsis(string: str, max_length: int) -> str:
     """
     Truncates a string to a specified maximum length and appends an ellipsis if necessary.
 
@@ -87,7 +90,7 @@ def truncate_and_append_ellipsis(string, max_length):
     return string[:max_length] + "..." if len(string) > max_length else string
 
 
-def display_differences(differences, names):
+def display_differences(differences: Dict[int, List[str]], names: List[str]) -> None:
     """
     Display the differences between original names and new names.
 
@@ -109,7 +112,7 @@ def display_differences(differences, names):
         print(f"{key}. {original_name.ljust(50-len(str(key)))} => {new_name}")
 
 
-def rename_files(names, differences):
+def rename_files(names: List[str], differences: Dict[int, List[str]]) -> None:
     for index, new_name in enumerate(names):
         if new_name == "ignored":
             continue
@@ -126,7 +129,9 @@ def rename_files(names, differences):
         os.rename(f"{directory}/{original_filename}", new_path)
 
 
-def ignore_file(list_of_index, new_names, differences):
+def ignore_file(
+    list_of_index: List[int], new_names: List[str], differences: Dict[int, List[str]]
+) -> List[str]:
     """
     Ignores files based on the given list of indices.
 
@@ -149,7 +154,7 @@ def ignore_file(list_of_index, new_names, differences):
     return new_names
 
 
-def scan_dir(dir):
+def scan_dir(dir: str) -> Tuple[List[str], Dict[int, List[str]]]:
     """
     Scans the specified directory and renames the files based on their title and artist.
 
@@ -159,10 +164,10 @@ def scan_dir(dir):
     Returns:
         tuple: A tuple containing a list of new file names and a dictionary of differences between the old and new names.
     """
-    new_names = []
-    errors = []
-    differences = {}
-    index = 0
+    new_names: List[str] = []
+    errors: List[str] = []
+    differences: Dict[int, List[str]] = {}
+    index: int = 0
     for filename in tqdm(os.listdir(dir)):
         base_name, ext = os.path.splitext(filename)
 
